@@ -37,6 +37,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nethermind.Mining.Test", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nethermind.Blockchain.Test", "Nethermind.Blockchain.Test\Nethermind.Blockchain.Test.csproj", "{E6C8C319-1BA8-437D-961D-1357FF5A9699}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chains", "Chains", "{D75E83BB-6092-45A4-B751-D05D4A6ED995}"
+	ProjectSection(SolutionItems) = preProject
+		Chains\foundation.json = Chains\foundation.json
+		Chains\genesis.json = Chains\genesis.json
+		Chains\goerli.json = Chains\goerli.json
+		Chains\rinkeby.json = Chains\rinkeby.json
+		Chains\ropsten.json = Chains\ropsten.json
+		Chains\spaceneth.json = Chains\spaceneth.json
+		Chains\sokol.json = Chains\sokol.json
+		Chains\poacore.json = Chains\poacore.json
+		Chains\volta.json = Chains\volta.json
+		Chains\AuRaTest.json = Chains\AuRaTest.json
+		Chains\xdai.json = Chains\xdai.json
+		Chains\ndmlocal.json = Chains\ndmlocal.json
+		Chains\energyweb.json = Chains\energyweb.json
+		Chains\baseline.json = Chains\baseline.json
+		Chains\kovan.json = Chains\kovan.json
+		Chains\wit.json = Chains\wit.json
+		Chains\yolo_v3x.json = Chains\yolo_v3x.json
+		Chains\catalyst.json = Chains\catalyst.json
+		Chains\themerge_devnet.json = Chains\themerge_devnet.json
+		Chains\themerge_testvectors.json = Chains\themerge_testvectors.json
+		Chains\hacknet_v2.json = Chains\hacknet_v2.json
+		Chains\themerge_kintsugi_testvectors.json = Chains\themerge_kintsugi_testvectors.json
+		Chains\themerge_kintsugi_mev.json = Chains\themerge_kintsugi_mev.json
+		Chains\fuse.json = Chains\fuse.json
+    	Chains\spark.json = Chains\spark.json
+	EndProjectSection
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nethermind.State.Test", "Nethermind.State.Test\Nethermind.State.Test.csproj", "{0A927E80-884F-4F41-BC5E-1825D32726DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nethermind.Config", "Nethermind.Config\Nethermind.Config.csproj", "{56791AE4-2679-47A5-9918-6D0199FD2EE9}"
