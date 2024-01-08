@@ -1,133 +1,75 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/nethermindeth/nethermind/assets/337518/3e3b3c06-9cf3-4364-a774-158e649588cc">
-    <source media="(prefers-color-scheme: light)" srcset="https://github.com/nethermindeth/nethermind/assets/337518/d1cc365c-6045-409f-a961-18d22ddb2535">
-    <img alt="Nethermind" src="https://github.com/nethermindeth/nethermind/assets/337518/d1cc365c-6045-409f-a961-18d22ddb2535" height="64">
-  </picture>
-</p>
+# Fuse Nethermind Client Docs
 
-# Nethermind Ethereum client
+This projects builds a customized version of the nethermind client with Fuse Network modifications. Those include the integrations with the Fuse SparkNet
 
-[![Tests](https://github.com/nethermindeth/nethermind/actions/workflows/nethermind-tests.yml/badge.svg)](https://github.com/nethermindeth/nethermind/actions/workflows/nethermind-tests.yml)
-[![Chat on Discord](https://img.shields.io/discord/629004402170134531?style=social&logo=discord)](https://discord.gg/GXJFaYk)
-[![Follow us on Twitter](https://img.shields.io/twitter/follow/nethermindeth?style=social&label=Follow)](https://twitter.com/nethermindeth)
-[![Ask on Discourse](https://img.shields.io/discourse/posts?style=social&label=Community&logo=discourse&server=https%3A%2F%2Fcommunity.nethermind.io)](https://community.nethermind.io/c/nethermind-client)
-[![GitPOAPs](https://public-api.gitpoap.io/v1/repo/NethermindEth/nethermind/badge)](https://www.gitpoap.io/gh/NethermindEth/nethermind)
+Since 08.2022 Fuse moved from OE client to Nethermind. To bootstrap your own Fuse (Spark) node on Nethermind client you could use `quickstart.sh` script.
 
-Nethermind is a high-performance, highly configurable Ethereum execution client built on .NET that runs on Linux, Windows, and macOS and supports Clique, Aura, and Ethash. With breakneck sync speeds and support for external plugins, it provides reliable access to rich on-chain data thanks to a high-performance JSON-RPC interface and node health monitoring with Grafana and Seq.
+&nbsp;
 
-## Documentation
+## Download
 
-Nethermind documentation is available at [docs.nethermind.io](https://docs.nethermind.io).
+`wget -O quickstart.sh https://raw.githubusercontent.com/fuseio/fuse-network/master/nethermind/quickstart.sh`
 
-### Supported networks
+&nbsp;
 
-**`Mainnet`** **`Goerli`** **`Sepolia`** **`Holesky`** **`Gnosis (xDai)`** **`Chiado`** **`Energy Web`** **`Volta`**
+## Gain needed permissions
 
-## Download and run
+`chmod 755 quickstart.sh`
 
-Release builds are available on the [Releases page](https://github.com/nethermindeth/nethermind/releases) and at [downloads.nethermind.io](https://downloads.nethermind.io).
+&nbsp;
 
-### On Linux
+## Run
 
-#### Prerequisites
+`./quickstart.sh -r [node_role] -n [network_name] -k [node_key]`
 
-- #### Ubuntu / Debian
+&nbsp;
 
-  ```sh
-  sudo apt-get install libsnappy-dev
-  ```
+## Run node for Fuse (Mainnet)
 
-- #### CentOS / Fedora
+`./quickstart.sh -r node -n fuse -k fusenet-node`
 
-  ```sh
-  sudo dnf install -y snappy
-  sudo ln -s `find /usr/lib64/ -type f -name "libbz2.so.1*"` /usr/lib64/libbz2.so.1.0
-  ```
+&nbsp;
 
-#### Install using PPA
+## Run bootnode for Spark (Testnet)
 
-1. `sudo add-apt-repository ppa:nethermindeth/nethermind` \
-   If command not found: `sudo apt-get install software-properties-common`
-2. `sudo apt-get install nethermind`
-3. `nethermind -c mainnet`
+`./quickstart.sh -r bootnode -n spark -k fusenet-spark-bootnode`
 
-### On Windows
+Note:
+`quickstart.sh` supports next Linux / Unix based distributions: Ubuntu, Debian, Fedora, CentOS, RHEL.
 
-#### Prerequisites
+Usage:
+`./quickstart.sh [-r|-n|-k||-v|-h|-u|-m]`
 
-In some cases, [Visual C++ Redistributable](https://aka.ms/vcredist) may need an update:
+Options:
 
-```
-winget install Microsoft.VCRedist.2015+.x64
-```
+-r Specify needed node role. Available next roles: 'node', 'bootnode', 'explorer'
 
-#### Install using Windows Package Manager
+-n Network (mainnet or testnet). Available next values: 'fuse' and 'spark'
 
-1. `winget install nethermind`
-2. `nethermind -c mainnet`
+-k Node key name for https://health.fuse.io. Example: 'my-own-fuse-node'
 
-### On macOS
+-v Script version
 
-#### Install using Homebrew
+-u Unjail a node (Validator only)
 
-1. `brew tap nethermindeth/nethermind`
-2. `brew install nethermind`
-3. `nethermind -c mainnet`
+-m Flag a node for maintenance (Validator only)
 
-## Docker image
+-h Help page
 
-The official Docker images of Nethermind are available on [Docker Hub](https://hub.docker.com/r/nethermind/nethermind).
+&nbsp;
 
-### Get the digest of the Docker image
+## Examples
 
-In case of any Docker image need to be updated in the repository, you can update the digest of these images as follows:
+### Unjail a node
 
-```sh
-docker inspect --format='{{index .RepoDigests 0}}' <image_name>
-```
+`./quickstart.sh -u`
 
-The output should show the image digest, and then you can copy that to the `FROM` tag in the Dockerfile.
+### Flag a node for maintenance
 
-## Building from source
+`./quickstart.sh -m`
 
-### Prerequisites
-
-Install [.NET SDK](https://dotnet.microsoft.com/en-us/download)
-
-### Clone the repository
-
-```sh
-git clone --recursive https://github.com/nethermindeth/nethermind.git
-```
-
-### Build and run
-
-```sh
-cd nethermind/src/Nethermind/Nethermind.Runner
-dotnet run -c release -- -c mainnet
-```
-
-### Test
-
-```sh
-cd nethermind/src/Nethermind
-
-# Run Nethermind tests:
-dotnet test Nethermind.sln -c release
-
-# Run Ethereum Foundation tests:
-dotnet test EthereumTests.sln -c release
-```
+&nbsp;
 
 ## Contributing
 
-BEFORE you start work on a feature or fix, please read and follow our [contribution guide](https://github.com/nethermindeth/nethermind/blob/master/CONTRIBUTING.md) to help avoid any wasted or duplicate effort.
-
-## Security 
-
-If you believe you have found a security vulnerability in our code, please report it to us as described in our [security policy](SECURITY.md).
-
-## License
-
-Nethermind is an open-source software licensed under the [LGPL-3.0](https://github.com/nethermindeth/nethermind/blob/master/LICENSE-LGPL).
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
