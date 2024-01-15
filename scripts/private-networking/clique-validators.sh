@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: LGPL-3.0-only
 
 #exit when any command fails
-set -e
+# Error handling and logging
+exec 2> setup_errors.log
+set -Eeuo pipefail
 DEBIAN_FRONTEND=noninteractive
 
 # Install required packages
@@ -123,7 +125,7 @@ cat <<EOF > node_$1/configs/config.cfg
         "ChainSpecPath": "/config/genesis/goerli.json",
         "BaseDbPath": "nethermind_db/clique",
         "LogFileName": "clique.logs.txt",
-        "StaticNodesPath": "Data/static-nodes.json"
+        "StaticNodesPath": "./static-nodes.json"
     },
     "Network": {
         "DiscoveryPort": $2,
@@ -146,6 +148,8 @@ EOF
 function writeEmptyStaticNodesFile() {
 cat <<EOF > static-nodes.json
 [
+
+]
 
 ]
 EOF
@@ -193,7 +197,7 @@ EOF
 
 function readSigners() {
     log=$(docker logs node_$1 | grep Node)
-    left_part=$(echo $log | cut -d ':' -f2)
+    left_part=$(echo $log | cut -d ':' -f2-)
     hash="${left_part%%(*}"
     result=$(echo $hash | cut -c 3-)
     echo "$result"
