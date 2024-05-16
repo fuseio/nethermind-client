@@ -83,11 +83,17 @@
     "eip1559ElasticityMultiplier": "0x2",
     "eip1559BaseFeeInitialValue": "0x3b9aca00",
     "eip1559BaseFeeMinValue": "0x2540be400",
-    "eip1559BaseFeeMinValueTransition": "0xF14DD4",
-    "eip2565Transition": "0xF14DD4",
-    "eip3198Transition": "0xF14DD4",
-    "eip3529Transition": "0xF14DD4",
-    "eip3541Transition": "0xF14DD4",
+    "eip1559BaseFeeMinValueTransition": "0xF4B906",
+    "eip2565Transition": "0xF4B906",
+    "eip3198Transition": "0xF4B906",
+    "eip3529Transition": "0xF4B906",
+    "eip3541Transition": "0xF4B906",
+    "eip3651TransitionTimestamp": "0x6645FFCC",
+    "eip3855TransitionTimestamp": "0x6645FFCC",
+    "eip3860TransitionTimestamp": "0x6645FFCC",
+    "eip1153TransitionTimestamp": "0x6645FFCC",
+    "eip5656TransitionTimestamp": "0x6645FFCC",
+    "eip6780TransitionTimestamp": "0x6645FFCC",
     "maxCodeSize": 24576,
     "maxCodeSizeTransition": "0x0"
   },
@@ -165,7 +171,7 @@
               }
             }
           },
-          "0xF14DD4": {
+          "0xF4B906": {
             "info": "EIP-2565: ModExp Gas Cost.",
             "price": {
               "modexp2565": {}
@@ -185,7 +191,7 @@
               }
             }
           },
-          "0xF14DD4": {
+          "0xF4B906": {
             "info": "EIP-1108 Istanbul HF",
             "price": {
               "alt_bn128_const_operations": {
@@ -207,7 +213,7 @@
               }
             }
           },
-          "0xF14DD4": {
+          "0xF4B906": {
             "info": "EIP-1108 Istanbul HF",
             "price": {
               "alt_bn128_const_operations": {
@@ -230,7 +236,7 @@
               }
             }
           },
-          "0xF14DD4": {
+          "0xF4B906": {
             "info": "EIP-1108 Istanbul HF",
             "price": {
               "alt_bn128_pairing": {
@@ -246,7 +252,7 @@
       "builtin": {
         "name": "blake2_f",
         "pricing": {
-          "0xF14DD4": {
+          "0xF4B906": {
             "info": "EIP-152 Istanbul HF",
             "price": {
               "blake2_f": {
