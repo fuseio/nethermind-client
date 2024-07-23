@@ -10,9 +10,7 @@
         "validators": {
           "multi": {
             "0": {
-              "list": [
-                "0xd9176e84898a0054680aec3f7c056b200c3d96c3"
-              ]
+              "list": ["0xd9176e84898a0054680aec3f7c056b200c3d96c3"]
             },
             "100": {
               "safeContract": "0x3014ca10b91cb3D0AD85fEf7A3Cb95BCAc9c0f79"
@@ -48,6 +46,22 @@
     "eip2028Transition": "0xd29240",
     "eip2929Transition": "0xd29240",
     "eip2930Transition": "0xd29240",
+    "eip1559Transition": "0x1D653E8",
+    "eip2565Transition": "0x1D653E8",
+    "eip3198Transition": "0x1D653E8",
+    "eip3529Transition": "0x1D653E8",
+    "eip3541Transition": "0x1D653E8",
+    "eip1559BaseFeeMinValueTransition": "0x1D653E8",
+    "eip3651TransitionTimestamp": "0x66A78440",
+    "eip3855TransitionTimestamp": "0x66A78440",
+    "eip3860TransitionTimestamp": "0x66A78440",
+    "eip1153TransitionTimestamp": "0x66A78440",
+    "eip5656TransitionTimestamp": "0x66A78440",
+    "eip6780TransitionTimestamp": "0x66A78440",
+    "eip1559BaseFeeMaxChangeDenominator": "0x8",
+    "eip1559ElasticityMultiplier": "0x2",
+    "eip1559BaseFeeInitialValue": "0x3b9aca00",
+    "eip1559BaseFeeMinValue": "0x2540be400",
     "maxCodeSize": 24576,
     "maxCodeSizeTransition": "0x0"
   },
@@ -59,6 +73,7 @@
       }
     },
     "difficulty": "0x20000",
+    "baseFeePerGas": "0x2540BE400",
     "gasLimit": "0x989680"
   },
   "nodes": [
