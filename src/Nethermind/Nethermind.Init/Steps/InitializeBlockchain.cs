@@ -96,7 +96,7 @@ namespace Nethermind.Init.Steps
             setApi.NonceManager = nonceManager;
             setApi.TxSender = new TxPoolSender(txPool, nonceReservingTxSealer, nonceManager, getApi.EthereumEcdsa!);
 
-            setApi.TxPoolInfoProvider = new TxPoolInfoProvider(chainHeadInfoProvider.AccountStateProvider, txPool);
+            setApi.TxPoolInfoProvider = new TxPoolInfoProvider(chainHeadInfoProvider.ReadOnlyStateProvider, txPool);
             setApi.GasPriceOracle = new GasPriceOracle(getApi.BlockTree!, getApi.SpecProvider, _api.LogManager, blocksConfig.MinGasPrice, jsonRpcConfig.UseMinGasPriceInEstimates);
             BlockCachePreWarmer? preWarmer = blocksConfig.PreWarmStateOnBlockProcessing
                 ? new(new ReadOnlyTxProcessingEnvFactory(

@@ -58,6 +58,11 @@ namespace Nethermind.JsonRpc
         public long? MaxSimulateBlocksCap { get; set; } = 256;
         public int EstimateErrorMargin { get; set; } = 150;
         public bool UseMinGasPriceInEstimates { get; set; } = false;
+        public int JsonSerializationMaxDepth { get; set; } = 128;
+        public string[] CorsOrigins { get; set; } = { "*" };
+        public int WebSocketsProcessingConcurrency { get; set; } = 1;
+        public int IpcProcessingConcurrency { get; set; } = 1;
+        public bool EnablePerMethodMetrics { get; set; } = false;
     };
 };
 
