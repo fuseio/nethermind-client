@@ -6,6 +6,7 @@
 
 # Parse arguments
 NODE_URL="http://localhost:8545"
+REFERENCE_URL=""
 VERBOSE=false
 
 for arg in "$@"; do
@@ -13,10 +14,18 @@ for arg in "$@"; do
         --verbose|-v)
             VERBOSE=true
             ;;
+        --reference=*)
+            REFERENCE_URL="${arg#*=}"
+            ;;
         --help|-h)
-            echo "Usage: $0 [node-url] [--verbose]"
+            echo "Usage: $0 [node-url] [--verbose] [--reference=url]"
             echo "  node-url: RPC endpoint (default: http://localhost:8545)"
             echo "  --verbose: Show detailed RPC calls and responses"
+            echo "  --reference=url: Public endpoint to compare block height"
+            echo "Examples:"
+            echo "  $0 http://localhost:8545"
+            echo "  $0 http://localhost:8545 --reference=https://rpc.fusespark.io"
+            echo "  $0 http://localhost:8545 --verbose --reference=https://eth.llamarpc.com"
             exit 0
             ;;
         http*)
@@ -49,14 +58,15 @@ CRITICAL=0
 rpc_call() {
     local method=$1
     local params=${2:-[]}
+    local endpoint=${3:-$NODE_URL}
     local payload="{\"jsonrpc\":\"2.0\",\"method\":\"$method\",\"params\":$params,\"id\":1}"
     
     # Log the RPC call if verbose mode is enabled
     if [ "$VERBOSE" = "true" ]; then
-        echo "  → RPC: $method $params" >&2
+        echo "  → RPC: $method $params to $endpoint" >&2
     fi
     
-    local response=$(curl -s -X POST "$NODE_URL" \
+    local response=$(curl -s -X POST "$endpoint" \
         -H "Content-Type: application/json" \
         -d "$payload" \
         --connect-timeout 5 \
@@ -147,22 +157,60 @@ if [ ! -z "$BLOCK_HEX" ]; then
     BLOCK_DATA=$(rpc_call "eth_getBlockByNumber" "[\"0x${BLOCK_HEX}\",false]")
     TIMESTAMP_HEX=$(echo "$BLOCK_DATA" | sed -n 's/.*"timestamp":"0x\([^"]*\)".*/\1/p')
     
+    # Check block age
+    BLOCK_STATUS=""
     if [ ! -z "$TIMESTAMP_HEX" ]; then
         TIMESTAMP=$((16#$TIMESTAMP_HEX))
         NOW=$(date +%s)
         AGE=$((NOW - TIMESTAMP))
         
         if [ $AGE -lt 300 ]; then  # 5 minutes
-            echo -e "${GREEN}✓${NC} Block #$BLOCK (${AGE}s old)"
-            ((TESTS_PASSED++))
+            BLOCK_STATUS="${GREEN}✓${NC} Block #$BLOCK (${AGE}s old)"
         else
             MINUTES=$((AGE / 60))
-            echo -e "${YELLOW}⚠${NC} Block #$BLOCK (${MINUTES}m old)"
-            ((TESTS_FAILED++))
+            BLOCK_STATUS="${YELLOW}⚠${NC} Block #$BLOCK (${MINUTES}m old)"
         fi
     else
-        echo -e "${GREEN}✓${NC} Block #$BLOCK"
-        ((TESTS_PASSED++))
+        BLOCK_STATUS="${GREEN}✓${NC} Block #$BLOCK"
+    fi
+    
+    # Compare with reference endpoint if provided
+    if [ ! -z "$REFERENCE_URL" ]; then
+        REF_BLOCK_HEX=$(rpc_call "eth_blockNumber" "[]" "$REFERENCE_URL" | sed -n 's/.*"result":"0x\([^"]*\)".*/\1/p')
+        if [ ! -z "$REF_BLOCK_HEX" ]; then
+            REF_BLOCK=$((16#$REF_BLOCK_HEX))
+            BLOCK_DIFF=$((REF_BLOCK - BLOCK))
+            
+            if [ $BLOCK_DIFF -lt 0 ]; then
+                BLOCK_DIFF=$((-BLOCK_DIFF))
+            fi
+            
+            if [ $BLOCK_DIFF -le 5 ]; then
+                echo -e "$BLOCK_STATUS, ref: #$REF_BLOCK (±$BLOCK_DIFF)"
+                ((TESTS_PASSED++))
+            elif [ $BLOCK_DIFF -le 50 ]; then
+                echo -e "${YELLOW}⚠${NC} Block #$BLOCK, ref: #$REF_BLOCK (±$BLOCK_DIFF blocks behind)"
+                ((TESTS_FAILED++))
+            else
+                echo -e "${RED}✗${NC} Block #$BLOCK, ref: #$REF_BLOCK (±$BLOCK_DIFF blocks behind)"
+                ((TESTS_FAILED++))
+                ((CRITICAL++))
+            fi
+        else
+            echo -e "$BLOCK_STATUS (ref endpoint failed)"
+            if [ $AGE -lt 300 ]; then
+                ((TESTS_PASSED++))
+            else
+                ((TESTS_FAILED++))
+            fi
+        fi
+    else
+        echo -e "$BLOCK_STATUS"
+        if [ $AGE -lt 300 ]; then
+            ((TESTS_PASSED++))
+        else
+            ((TESTS_FAILED++))
+        fi
     fi
 else
     echo -e "${RED}✗${NC} Cannot get block"

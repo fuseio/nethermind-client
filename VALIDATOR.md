@@ -13,8 +13,11 @@ chmod +x validate.sh
 # With verbose logging (shows RPC calls)
 ./validate.sh https://rpc.fusespark.io --verbose
 
-# Or one-liner
-curl -s https://raw.githubusercontent.com/fuseio/nethermind-client/master/validate.sh | bash -s ./validate.sh https://rpc.fusespark.io --verbose
+# Compare with reference endpoint
+./validate.sh http://localhost:8545 --reference=https://rpc.fusespark.io
+
+# Or one-liner with reference
+curl -s https://raw.githubusercontent.com/fuseio/nethermind-client/master/validate.sh | bash -s https://rpc.fusespark.io --reference=https://rpc.fusespark.io
 ```
 
 ## What it checks
@@ -23,7 +26,7 @@ curl -s https://raw.githubusercontent.com/fuseio/nethermind-client/master/valida
 2. **Version** - Shows version (info only)
 3. **Sync Status** - Node is synced
 4. **Peer Count** - Has enough peers (≥10)
-5. **Latest Block** - Receiving new blocks
+5. **Latest Block** - Receiving new blocks (compares with reference if provided)
 6. **RPC Methods** - Basic methods work
 
 ## Exit codes
